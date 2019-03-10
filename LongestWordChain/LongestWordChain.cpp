@@ -3,10 +3,40 @@
 
 #include "pch.h"
 #include <iostream>
+#include <string>
 
-int main()
+#include "commenFuncs.h"
+#include "node.h"
+#include "def.h"
+
+char *wordlist[20000];
+int wordIndex = 0;
+
+int main(int argc, char *argv[])
 {
-    std::cout << "Hello World!\n"; 
+    using std::cout;
+    using std::endl;
+
+    int tag = -1;
+    char headCh = '\0';
+    char endCh = '\0';
+    bool isRing = false;
+    std::string filename = std::string();
+
+    getopt(argc, argv, tag, headCh, endCh, isRing, filename);
+
+    getFileInput(filename);
+    char **result = new char*[wordIndex];
+    if (tag == 0)
+    {
+        gen_chain_word(wordlist, wordIndex, result, headCh, endCh, isRing);
+    }
+    else
+    {
+        gen_chain_char(wordlist, wordIndex, result, headCh, endCh, isRing);
+    }
+
+    return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
