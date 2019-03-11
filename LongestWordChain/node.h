@@ -8,21 +8,28 @@
 class Node
 {
 private:
-    const char *m_word;
+    char *m_word;
     int m_length;
     char m_firstCh;
     char m_lastCh;
     bool m_isUsed;
+    int m_maxLength;
+    Node* m_preNode;
 public:
-    Node(const char *word);
+    Node(char *word);
     ~Node();
     int getLength();
     char getFirstChar();
     char getLastChar();
-    const char *getWord();
+    char *getWord();
     bool getIsUsed();
     void changeIsUsed();
     friend std::ostream &operator<<(std::ostream &os, Node &node);
+    int getMaxLength();
+    void setMaxLength(int length);
+    Node *getPreNode();
+    void setPreNode(Node *preNode);
+
 };
 
 #endif //NODE_H_

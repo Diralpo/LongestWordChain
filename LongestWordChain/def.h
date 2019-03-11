@@ -8,6 +8,8 @@
 constexpr int charNum = 26;
 extern char *wordlist[];
 extern int wordIndex;
+extern int partOrderRelation[][charNum];
+extern int alphaInDegree[];
 //constexpr int
 
 #endif //DEF_H_

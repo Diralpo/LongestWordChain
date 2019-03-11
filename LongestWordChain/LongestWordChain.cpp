@@ -26,14 +26,30 @@ int main(int argc, char *argv[])
     getopt(argc, argv, tag, headCh, endCh, isRing, filename);
 
     getFileInput(filename);
+    /* 
+    for (int i = 0; i < wordIndex; ++i)
+    {
+        cout << wordlist[i] << endl;
+    }
+    */
     char **result = new char*[wordIndex];
+    int maxLength = 0;
+
     if (tag == 0)
     {
-        gen_chain_word(wordlist, wordIndex, result, headCh, endCh, isRing);
+        maxLength = gen_chain_word(wordlist, wordIndex, result, headCh, endCh, isRing);
+        for (int i = 0; i < maxLength; ++i)
+        {
+            cout << result[i] << endl;
+        }
     }
     else
     {
-        gen_chain_char(wordlist, wordIndex, result, headCh, endCh, isRing);
+        maxLength = gen_chain_char(wordlist, wordIndex, result, headCh, endCh, isRing);
+        for (int i = 0; i < maxLength; ++i)
+        {
+            cout << result[i] << endl;
+        }
     }
 
     return 0;

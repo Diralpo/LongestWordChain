@@ -3,9 +3,11 @@
 #include <iostream>
 #include <fstream>
 #include <cctype>
+#include <vector>
 
 #include "commenFuncs.h"
 #include "def.h"
+#include "node.h"
 
 /**
     tag :   0-- max number 
@@ -23,6 +25,7 @@ void getopt(int argc, char *argv[], int &tag, char &headCh, char &endCh, bool &i
             if (tag != -1)
             {
                 // $TODO
+                exit(-1);
             }
             tag = 0;
             i++;
@@ -32,6 +35,7 @@ void getopt(int argc, char *argv[], int &tag, char &headCh, char &endCh, bool &i
             if (tag != -1)
             {
                 // $TODO
+                exit(-1);
             }
             tag = 1;
             i++;
@@ -41,15 +45,18 @@ void getopt(int argc, char *argv[], int &tag, char &headCh, char &endCh, bool &i
             if (strlen(argv[i + 1]) != 1)
             {
                 // $TODO
+                exit(-1);
             }
             if (headCh != '\0')
             {
                 // $TODO
+                exit(-1);
             }
             headCh = argv[i + 1][0];
             if (isalpha(headCh) == 0)
             {
                 // $TODO
+                exit(-1);
             }
             i += 2;
         }
@@ -58,15 +65,18 @@ void getopt(int argc, char *argv[], int &tag, char &headCh, char &endCh, bool &i
             if (strlen(argv[i + 1]) != 1)
             {
                 // $TODO
+                exit(-1);
             }
             if (endCh != '\0')
             {
                 // $TODO
+                exit(-1);
             }
             endCh = argv[i + 1][0];
             if (isalpha(endCh) == 0)
             {
                 // $TODO
+                exit(-1);
             }
             i += 2;
         }
@@ -75,6 +85,7 @@ void getopt(int argc, char *argv[], int &tag, char &headCh, char &endCh, bool &i
             if (isRing)
             {
                 // $TODO
+                exit(-1);
             }
             isRing = true;
             i++;
@@ -89,12 +100,14 @@ void getopt(int argc, char *argv[], int &tag, char &headCh, char &endCh, bool &i
             else 
             {
                 // $TODO
+                exit(-1);
             }
         }
     }
     if (tag != 0 && tag != 1)
     {
         // $TODO
+        exit(-1);
     }
 }
 
@@ -111,40 +124,28 @@ void getFileInput(const std::string &filename)
     if (!in) 
     {
         // $TODO
+        exit(-1);
     }
     while (!in.eof())
     {
         temp = in.get();
         if (isalpha(temp)) 
         {
-            tempstr[tempcnt] = temp;
+            //tempstr[tempcnt] = temp;
+            tempstr[tempcnt] = (temp >= 'A' && temp <= 'Z') ? (temp - 'A' + 'a') : temp;
             tempcnt++;
         }
         else {
-            tempstr[tempcnt] = '\0';
-            //wordlist[wordIndex] = std::string(tempstr);
-            wordlist[wordIndex] = new char[tempcnt + 1];
-            strcpy(wordlist[wordIndex], tempstr);
-            wordIndex++;
-            tempcnt = 0;
+            if (tempcnt > 0)
+            {
+                tempstr[tempcnt] = '\0';
+                //wordlist[wordIndex] = std::string(tempstr);
+                wordlist[wordIndex] = new char[tempcnt + 1];
+                strcpy(wordlist[wordIndex], tempstr);
+                wordIndex++;
+                tempcnt = 0;
+            }\
         }
     }
     in.close();
-}
-
-int gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多单词数量的
-{
-    for (int i = 0; i < len; i++)
-    {
-        result[i] = words[i];
-    }
-    return 0;
-}
-int gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多字母数量的
-{
-    for (int i = 0; i < len; i++)
-    {
-        result[i] = words[i];
-    }
-    return 0;
 }
