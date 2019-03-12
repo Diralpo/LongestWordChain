@@ -7,66 +7,81 @@
 
 #include "def.h"
 #include "node.h"
+#include "core.h"
 
+Core::Core(char* words[], int len, char* result[], char head, char tail, bool enable_loop, int tag)
+{
+    m_words = words;
+    m_len = len;
+    m_result = result;
+    m_head = head;
+    m_tail = tail;
+    m_enable_loop = enable_loop;
+    m_tag = tag;
 
-int partOrderRelation[charNum][charNum];
-int alphaInDegree[charNum];
+    for (int i = 0; i < charNum; ++i)
+    {
+        m_alphaOrder[i] = 0;
+        m_alphaInDegree[i] = 0;
+        for (int j = 0; j < charNum; ++j)
+        {
+            m_partOrderRelation[i][j] = 0;
+            m_partOrderRelation[j][i] = 0;
+        }
+    }
+
+    m_firstDic = new std::vector<Node*>[charNum];
+    m_lastDic = new std::vector<Node*>[charNum];
+}
+
+Core::~Core()
+{
+
+}
 
 /*
     apple
     part['a']['e'] = 1
 */
-void initPartOrder()
-{
-    for (int i = 0; i < charNum; ++i)
-    {
-        alphaInDegree[i] = 0;
-        for (int j = 0; j <= i; ++j)
-        {
-            partOrderRelation[i][j] = 0;
-            partOrderRelation[j][i] = 0;
-        }
-    }
-}
 
 /*
     将传入的字符指针数组转换为定义的对象，并填入相应的数组中
 */
-void fillInTable(char* words[], int len, std::vector<Node*> firstDic[], std::vector<Node*> lastDic[], bool enable_loop)
+void Core::fillInTable()
 {
     Node *temp;
     int firstIndex = -1;
     int lastIndex = -1;
-    for (int i = 0; i < len; ++i)
+    for (int i = 0; i < m_len; ++i)
     {
-        temp = new Node(words[i]);
+        temp = new Node(m_words[i]);
         firstIndex = temp->getFirstChar() - 'a';
         lastIndex = temp->getLastChar() - 'a';
         if (firstIndex == lastIndex)
         {
-            firstDic[firstIndex].insert(firstDic[firstIndex].begin(), temp);
-            lastDic[lastIndex].insert(lastDic[lastIndex].begin(), temp);
+            m_firstDic[firstIndex].insert(m_firstDic[firstIndex].begin(), temp);
+            m_lastDic[lastIndex].insert(m_lastDic[lastIndex].begin(), temp);
         }
         else
         {
-            firstDic[firstIndex].push_back(temp);
-            lastDic[lastIndex].push_back(temp);
+            m_firstDic[firstIndex].push_back(temp);
+            m_lastDic[lastIndex].push_back(temp);
         }
         if (firstIndex == lastIndex)
         {
-            if (!enable_loop && partOrderRelation[firstIndex][lastIndex] > 0)
+            if (!m_enable_loop && m_partOrderRelation[firstIndex][lastIndex] > 0)
             {
                 // $TODO
                 exit(-1);
             }
             else
             {
-                partOrderRelation[firstIndex][lastIndex]++;
+                m_partOrderRelation[firstIndex][lastIndex]++;
             }
         }
         else
         {
-            if (!enable_loop && partOrderRelation[firstIndex][lastIndex] < 0)
+            if (!m_enable_loop && m_partOrderRelation[firstIndex][lastIndex] < 0)
             {
                 // $TODO
                 exit(-1);
@@ -74,12 +89,12 @@ void fillInTable(char* words[], int len, std::vector<Node*> firstDic[], std::vec
             }
             else
             {
-                if (partOrderRelation[firstIndex][lastIndex] == 0)
+                if (m_partOrderRelation[firstIndex][lastIndex] == 0)
                 {
-                    alphaInDegree[lastIndex]++;
+                    m_alphaInDegree[lastIndex]++;
                 }
-                partOrderRelation[firstIndex][lastIndex] = 1;
-                partOrderRelation[lastIndex][firstIndex] = -1;
+                m_partOrderRelation[firstIndex][lastIndex] = 1;
+                m_partOrderRelation[lastIndex][firstIndex] = -1;
             }
         }
     }
@@ -88,7 +103,7 @@ void fillInTable(char* words[], int len, std::vector<Node*> firstDic[], std::vec
 /*
     给不同的字母排序
 */
-void alphaSort(int alphaOrder[])
+void Core::alphaSort()
 {
     int flag = 0;
     int orderedNum = 0;
@@ -98,17 +113,17 @@ void alphaSort(int alphaOrder[])
         flag = 0;
         for (int i = 0; i < charNum; ++i)
         {
-            if (alphaInDegree[i] == 0 && isOrdered[i] == 0)
+            if (m_alphaInDegree[i] == 0 && isOrdered[i] == 0)
             {
                 flag = 1;
                 isOrdered[i] = 1;
-                alphaOrder[orderedNum] = i;
+                m_alphaOrder[orderedNum] = i;
                 orderedNum++;
                 for (int j = 0; j < charNum; ++j)
                 {
-                    if (i != j && partOrderRelation[i][j] == 1)
+                    if (i != j && m_partOrderRelation[i][j] == 1)
                     {
-                        alphaInDegree[j]--;
+                        m_alphaInDegree[j]--;
                     }
                 }
                 break;
@@ -126,15 +141,15 @@ void alphaSort(int alphaOrder[])
 /*
     将拓扑排序后的字符串顺序填入vector中
 */
-void fillInOrder(int beginIndex, int *alphaOrder, std::vector<Node*> firstDic[], int loopBegin, std::vector<Node*> &sortedWords)
+void Core::fillInOrder(int beginIndex, int loopBegin)
 {
     for (int i = 0; i < charNum; ++i)
     {
-        if (beginIndex>=0 && beginIndex == alphaOrder[i])
+        if (beginIndex >= 0 && beginIndex == m_alphaOrder[i])
         {
-            if (firstDic[alphaOrder[i]].size() > 0)
+            if (m_firstDic[m_alphaOrder[i]].size() > 0)
             {
-                loopBegin = sortedWords.size();
+                loopBegin = m_sortedWords.size();
             }
             else
             {
@@ -142,46 +157,46 @@ void fillInOrder(int beginIndex, int *alphaOrder, std::vector<Node*> firstDic[],
                 abort();
             }
         }
-        for (int j = 0; j < firstDic[alphaOrder[i]].size(); ++j)
+        for (int j = 0; j < m_firstDic[m_alphaOrder[i]].size(); ++j)
         {
-            sortedWords.push_back(firstDic[alphaOrder[i]][j]);
+            m_sortedWords.push_back(m_firstDic[m_alphaOrder[i]][j]);
         }
     }
 }
 
-void dynamicAlgorithm(int loopBegin, int len, std::vector<Node*> &sortedWords, int tag, int beginIndex, int endIndex, Node* &prevNodeNow)
+/*
+动态规划
+*/
+void Core::dynamicAlgorithm(int loopBegin, int beginIndex, int endIndex, Node* &prevNodeNow)
 {
-    /*
-    动态规划
-    */
-    Node *nodeNow = nullptr;
+    Node *nodeNow = nullptr;  // 当前遍历的节点
     int lengthNow = 0;
     int maxLengthNow = 0;
-    for (int i = loopBegin; i < len; ++i)
+    for (int i = loopBegin; i < m_len; ++i)
     {
-        nodeNow = sortedWords[i];
+        nodeNow = m_sortedWords[i];
         for (int j = loopBegin; j < i; ++j)
         {
-            if (sortedWords[j]->getLastChar() == nodeNow->getFirstChar() && sortedWords[j]->getMaxLength() > 0)
+            if (m_sortedWords[j]->getLastChar() == nodeNow->getFirstChar() && m_sortedWords[j]->getMaxLength() > 0)
             {
-                if (tag == 1)
+                if (m_tag == 1)
                 {
-                    lengthNow = sortedWords[j]->getMaxLength() + nodeNow->getLength();
+                    lengthNow = m_sortedWords[j]->getMaxLength() + nodeNow->getLength();
                 }
                 else
                 {
-                    lengthNow = sortedWords[j]->getMaxLength() + 1;
+                    lengthNow = m_sortedWords[j]->getMaxLength() + 1;
                 }
                 if (lengthNow > nodeNow->getMaxLength())
                 {
                     nodeNow->setMaxLength(lengthNow);
-                    nodeNow->setPreNode(sortedWords[j]);
+                    nodeNow->setPreNode(m_sortedWords[j]);
                 }
             }
         }
         if (beginIndex >= 0)
         {
-            if (tag == 1)
+            if (m_tag == 1)
             {
                 if (beginIndex == nodeNow->getFirstChar() - 'a' && nodeNow->getMaxLength() < nodeNow->getLength())
                 {
@@ -199,7 +214,7 @@ void dynamicAlgorithm(int loopBegin, int len, std::vector<Node*> &sortedWords, i
         }
         else
         {
-            if (tag == 1)
+            if (m_tag == 1)
             {
                 if (nodeNow->getMaxLength() < nodeNow->getLength())
                 {
@@ -236,29 +251,29 @@ void dynamicAlgorithm(int loopBegin, int len, std::vector<Node*> &sortedWords, i
     }
 }
 
-int gen_chain(char* words[], int len, char* result[], char head, char tail, bool enable_loop, int tag)
+/*
+    实际调用的函数
+*/
+int Core::gen_chain()
 {
     using std::vector;
 
     Node *prevNodeNow = nullptr;
-    vector<Node*> firstDic[charNum];
-    vector<Node*> lastDic[charNum];
-    vector<Node*> sortedWords;
+
     vector<Node*> retVec;
-    int alphaOrder[charNum];
-    int beginIndex = (head == '\0') ? -1 : ((head <= 'Z' && head >= 'A') ? head - 'A' : head - 'a');
-    int endIndex = (tail == '\0') ? -1 : ((tail <= 'Z' && tail >= 'A') ? tail - 'A' : tail - 'a');
+
+    int beginIndex = (m_head == '\0') ? -1 : ((m_head <= 'Z' && m_head >= 'A') ? m_head - 'A' : m_head - 'a');
+    int endIndex = (m_tail == '\0') ? -1 : ((m_tail <= 'Z' && m_tail >= 'A') ? m_tail - 'A' : m_tail - 'a');
     int loopBegin = 0;
 
-    initPartOrder(); // 初始化alphaOrder数组
-    fillInTable(words, len, firstDic, lastDic, enable_loop);  // 根据传入的字符指针数组构建相应的对象，并将其填入firstDic、lastDic数组中
+    fillInTable();  // 根据传入的字符指针数组构建相应的对象，并将其填入firstDic、lastDic数组中
 
-    if (!enable_loop)
+    if (!m_enable_loop)
     {
         // 不构成环的情况，需要考虑可能出现环
-        alphaSort(alphaOrder);
-        fillInOrder(beginIndex, alphaOrder, firstDic, loopBegin, sortedWords);
-        dynamicAlgorithm(loopBegin, len, sortedWords, tag, beginIndex, endIndex, prevNodeNow);
+        alphaSort();
+        fillInOrder(beginIndex, loopBegin);
+        dynamicAlgorithm(loopBegin, beginIndex, endIndex, prevNodeNow);
         /*
         逆序将最长单词链填入vector中
         */
@@ -272,7 +287,7 @@ int gen_chain(char* words[], int len, char* result[], char head, char tail, bool
         */
         for (int i = 0; i < retVec.size(); ++i)
         {
-            result[i] = retVec[i]->getWord();
+            m_result[i] = retVec[i]->getWord();
         }
         return retVec.size();
     }
@@ -283,20 +298,20 @@ int gen_chain(char* words[], int len, char* result[], char head, char tail, bool
     return 0;
 }
 
-int gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多单词数量的
+int Core::gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多单词数量的
 {
     using std::cout;
     using std::endl;
-
-    //cout << "最多单词数量" << endl;
-    return gen_chain(words, len, result, head, tail, enable_loop, 0);
+    cout << "最多单词数量" << endl;
+    Core newCore = Core(words, len, result, head, tail, enable_loop, 0);
+    return newCore.gen_chain();
 }
 
-int gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多字母数量的
+int Core::gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多字母数量的
 {
     using std::cout;
     using std::endl;
-
-    //cout << "最多字母数量" << endl;
-    return gen_chain(words, len, result, head, tail, enable_loop, 1);
+    cout << "最多字母数量" << endl;
+    Core newCore = Core(words, len, result, head, tail, enable_loop, 1);
+    return newCore.gen_chain();
 }

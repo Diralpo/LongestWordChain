@@ -115,7 +115,6 @@ void getFileInput(const std::string &filename)
 {
     using std::ifstream;
     ifstream in(filename);
-    std::string newStr;
 
     char temp;
     int tempcnt = 0;
@@ -144,7 +143,7 @@ void getFileInput(const std::string &filename)
                 strcpy(wordlist[wordIndex], tempstr);
                 wordIndex++;
                 tempcnt = 0;
-            }\
+            }
         }
     }
     in.close();
