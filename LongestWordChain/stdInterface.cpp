@@ -29,6 +29,9 @@ void initPartOrder()
     }
 }
 
+/*
+    将传入的字符指针数组转换为定义的对象，并填入相应的数组中
+*/
 void fillInTable(char* words[], int len, std::vector<Node*> firstDic[], std::vector<Node*> lastDic[], bool enable_loop)
 {
     Node *temp;
@@ -82,6 +85,9 @@ void fillInTable(char* words[], int len, std::vector<Node*> firstDic[], std::vec
     }
 }
 
+/*
+    给不同的字母排序
+*/
 void alphaSort(int alphaOrder[])
 {
     int flag = 0;
@@ -117,125 +123,35 @@ void alphaSort(int alphaOrder[])
 
 }
 
-int gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多单词数量的
+/*
+    将拓扑排序后的字符串顺序填入vector中
+*/
+void fillInOrder(int beginIndex, int *alphaOrder, std::vector<Node*> firstDic[], int loopBegin, std::vector<Node*> &sortedWords)
 {
-    using std::vector;
-    using std::cout;
-    using std::endl;
-
-    int maxLengthNow = 0;
-    Node *prevNodeNow = nullptr;
-    Node* nodeNow = nullptr;
-    int lengthNow = 0;
-    int alphaOrder[charNum];
-
-    int beginIndex = (head == '\0') ? -1 : ((head <= 'Z' && head >= 'A') ? head - 'A' : head - 'a');
-    int endIndex = (tail == '\0') ? -1 : ((tail <= 'Z' && tail >= 'A') ? tail - 'A' : tail - 'a');
-    int loopBegin = 0;
-
-    initPartOrder();
-
-    vector<Node*> firstDic[charNum];
-    vector<Node*> lastDic[charNum];
-    vector<Node*> sortedWords;
-
-    fillInTable(words, len, firstDic, lastDic, enable_loop);
-
-    if (!enable_loop) 
+    for (int i = 0; i < charNum; ++i)
     {
-        alphaSort(alphaOrder);
-        for (int i = 0; i < charNum; ++i)
+        if (beginIndex>=0 && beginIndex == alphaOrder[i])
         {
-            if (head != '0' && beginIndex == alphaOrder[i])
+            if (firstDic[alphaOrder[i]].size() > 0)
             {
-                if (firstDic[alphaOrder[i]].size() > 0)
-                {
-                    loopBegin = sortedWords.size();
-                }
-                else
-                {
-                    // $TODO
-                    abort();
-                }
-            }
-            for (int j = 0; j < firstDic[alphaOrder[i]].size(); ++j)
-            {
-                sortedWords.push_back(firstDic[alphaOrder[i]][j]);
-            }
-        }
-
-        for (int i = loopBegin; i < len; ++i)
-        {
-            nodeNow = sortedWords[i];
-            for (int j = loopBegin; j < i; ++j)
-            {
-                if (sortedWords[j]->getLastChar() == nodeNow->getFirstChar() && sortedWords[j]->getMaxLength() > 0)
-                {
-                    lengthNow = sortedWords[j]->getMaxLength() + 1;
-                    if (lengthNow > nodeNow->getMaxLength())
-                    {
-                        nodeNow->setMaxLength(lengthNow);
-                        nodeNow->setPreNode(sortedWords[j]);
-                    }
-                }
-            }
-            if (head != '\0')
-            {
-                if (beginIndex == nodeNow->getFirstChar() - 'a' && nodeNow->getMaxLength() < 1)
-                {
-                    nodeNow->setMaxLength(1);
-                }
+                loopBegin = sortedWords.size();
             }
             else
             {
-                if (nodeNow->getMaxLength() < 1)
-                {
-                    nodeNow->setMaxLength(1);
-                }
-            }
-
-            if (tail != '\0')
-            {
-                if (endIndex == nodeNow->getLastChar() - 'a' && nodeNow->getMaxLength() > maxLengthNow)
-                {
-                    maxLengthNow = nodeNow->getMaxLength();
-                    prevNodeNow = nodeNow;
-                }
-            }
-            else
-            {
-                if (nodeNow->getMaxLength() > maxLengthNow)
-                {
-                    maxLengthNow = nodeNow->getMaxLength();
-                    prevNodeNow = nodeNow;
-                }
+                // $TODO
+                abort();
             }
         }
-        vector<Node*> retVec;
-        while (prevNodeNow != nullptr)
+        for (int j = 0; j < firstDic[alphaOrder[i]].size(); ++j)
         {
-            retVec.insert(retVec.begin(), prevNodeNow);
-            prevNodeNow = prevNodeNow->getPreNode();
+            sortedWords.push_back(firstDic[alphaOrder[i]][j]);
         }
-        for (int i = 0; i < retVec.size(); ++i)
-        {
-            result[i] = retVec[i]->getWord();
-        }
-        return retVec.size();
     }
-    else
-    {
-
-    }
-
-    return 0;
 }
 
-int gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多字母数量的
+int gen_chain(char* words[], int len, char* result[], char head, char tail, bool enable_loop, int tag)
 {
     using std::vector;
-    using std::cout;
-    using std::endl;
 
     int maxLengthNow = 0;
     Node *prevNodeNow = nullptr;
@@ -252,32 +168,17 @@ int gen_chain_char(char* words[], int len, char* result[], char head, char tail,
     vector<Node*> firstDic[charNum];
     vector<Node*> lastDic[charNum];
     vector<Node*> sortedWords;
+    vector<Node*> retVec;
 
     fillInTable(words, len, firstDic, lastDic, enable_loop);
 
     if (!enable_loop)
     {
         alphaSort(alphaOrder);
-        for (int i = 0; i < charNum; ++i)
-        {
-            if (head != '0' && beginIndex == alphaOrder[i])
-            {
-                if (firstDic[alphaOrder[i]].size() > 0)
-                {
-                    loopBegin = sortedWords.size();
-                }
-                else
-                {
-                    // $TODO
-                    abort();
-                }
-            }
-            for (int j = 0; j < firstDic[alphaOrder[i]].size(); ++j)
-            {
-                sortedWords.push_back(firstDic[alphaOrder[i]][j]);
-            }
-        }
-
+        fillInOrder(beginIndex, alphaOrder, firstDic, loopBegin, sortedWords);
+        /*
+        动态规划
+        */
         for (int i = loopBegin; i < len; ++i)
         {
             nodeNow = sortedWords[i];
@@ -285,7 +186,14 @@ int gen_chain_char(char* words[], int len, char* result[], char head, char tail,
             {
                 if (sortedWords[j]->getLastChar() == nodeNow->getFirstChar() && sortedWords[j]->getMaxLength() > 0)
                 {
-                    lengthNow = sortedWords[j]->getMaxLength() + nodeNow->getLength();
+                    if (tag == 1)
+                    {
+                        lengthNow = sortedWords[j]->getMaxLength() + nodeNow->getLength();
+                    }
+                    else
+                    {
+                        lengthNow = sortedWords[j]->getMaxLength() + 1;
+                    }
                     if (lengthNow > nodeNow->getMaxLength())
                     {
                         nodeNow->setMaxLength(lengthNow);
@@ -295,17 +203,40 @@ int gen_chain_char(char* words[], int len, char* result[], char head, char tail,
             }
             if (head != '\0')
             {
-                if (beginIndex == nodeNow->getFirstChar() - 'a' && nodeNow->getMaxLength() < nodeNow->getLength())
+                if (tag == 1)
                 {
-                    nodeNow->setMaxLength(nodeNow->getLength());
+                    if (beginIndex == nodeNow->getFirstChar() - 'a' && nodeNow->getMaxLength() < nodeNow->getLength())
+                    {
+                        nodeNow->setMaxLength(nodeNow->getLength());
+                    }
                 }
+                else
+                {
+                    if (beginIndex == nodeNow->getFirstChar() - 'a' && nodeNow->getMaxLength() < 1)
+                    {
+                        nodeNow->setMaxLength(1);
+                    }
+                }
+                
             }
             else
             {
-                if (nodeNow->getMaxLength() < nodeNow->getLength())
+                if (tag == 1)
                 {
-                    nodeNow->setMaxLength(nodeNow->getLength());
+                    if (nodeNow->getMaxLength() < nodeNow->getLength())
+                    {
+                        nodeNow->setMaxLength(nodeNow->getLength());
+                    }
+
                 }
+                else
+                {
+                    if (nodeNow->getMaxLength() < 1)
+                    {
+                        nodeNow->setMaxLength(1);
+                    }
+                }
+                
             }
 
             if (tail != '\0')
@@ -325,12 +256,17 @@ int gen_chain_char(char* words[], int len, char* result[], char head, char tail,
                 }
             }
         }
-        vector<Node*> retVec;
+        /*
+        逆序将最长单词链填入vector中
+        */
         while (prevNodeNow != nullptr)
         {
             retVec.insert(retVec.begin(), prevNodeNow);
             prevNodeNow = prevNodeNow->getPreNode();
         }
+        /*
+        将vector中的数据取出填入result中
+        */
         for (int i = 0; i < retVec.size(); ++i)
         {
             result[i] = retVec[i]->getWord();
@@ -339,8 +275,26 @@ int gen_chain_char(char* words[], int len, char* result[], char head, char tail,
     }
     else
     {
+        // $TODO
 
     }
-
     return 0;
+}
+
+int gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多单词数量的
+{
+    using std::cout;
+    using std::endl;
+
+    //cout << "最多单词数量" << endl;
+    return gen_chain(words, len, result, head, tail, enable_loop, 0);
+}
+
+int gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多字母数量的
+{
+    using std::cout;
+    using std::endl;
+
+    //cout << "最多字母数量" << endl;
+    return gen_chain(words, len, result, head, tail, enable_loop, 1);
 }
