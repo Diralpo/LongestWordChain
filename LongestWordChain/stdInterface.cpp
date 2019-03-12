@@ -149,113 +149,116 @@ void fillInOrder(int beginIndex, int *alphaOrder, std::vector<Node*> firstDic[],
     }
 }
 
+void dynamicAlgorithm(int loopBegin, int len, std::vector<Node*> &sortedWords, int tag, int beginIndex, int endIndex, Node* &prevNodeNow)
+{
+    /*
+    动态规划
+    */
+    Node *nodeNow = nullptr;
+    int lengthNow = 0;
+    int maxLengthNow = 0;
+    for (int i = loopBegin; i < len; ++i)
+    {
+        nodeNow = sortedWords[i];
+        for (int j = loopBegin; j < i; ++j)
+        {
+            if (sortedWords[j]->getLastChar() == nodeNow->getFirstChar() && sortedWords[j]->getMaxLength() > 0)
+            {
+                if (tag == 1)
+                {
+                    lengthNow = sortedWords[j]->getMaxLength() + nodeNow->getLength();
+                }
+                else
+                {
+                    lengthNow = sortedWords[j]->getMaxLength() + 1;
+                }
+                if (lengthNow > nodeNow->getMaxLength())
+                {
+                    nodeNow->setMaxLength(lengthNow);
+                    nodeNow->setPreNode(sortedWords[j]);
+                }
+            }
+        }
+        if (beginIndex >= 0)
+        {
+            if (tag == 1)
+            {
+                if (beginIndex == nodeNow->getFirstChar() - 'a' && nodeNow->getMaxLength() < nodeNow->getLength())
+                {
+                    nodeNow->setMaxLength(nodeNow->getLength());
+                }
+            }
+            else
+            {
+                if (beginIndex == nodeNow->getFirstChar() - 'a' && nodeNow->getMaxLength() < 1)
+                {
+                    nodeNow->setMaxLength(1);
+                }
+            }
+
+        }
+        else
+        {
+            if (tag == 1)
+            {
+                if (nodeNow->getMaxLength() < nodeNow->getLength())
+                {
+                    nodeNow->setMaxLength(nodeNow->getLength());
+                }
+
+            }
+            else
+            {
+                if (nodeNow->getMaxLength() < 1)
+                {
+                    nodeNow->setMaxLength(1);
+                }
+            }
+
+        }
+
+        if (endIndex >= 0)
+        {
+            if (endIndex == nodeNow->getLastChar() - 'a' && nodeNow->getMaxLength() > maxLengthNow)
+            {
+                maxLengthNow = nodeNow->getMaxLength();
+                prevNodeNow = nodeNow;
+            }
+        }
+        else
+        {
+            if (nodeNow->getMaxLength() > maxLengthNow)
+            {
+                maxLengthNow = nodeNow->getMaxLength();
+                prevNodeNow = nodeNow;
+            }
+        }
+    }
+}
+
 int gen_chain(char* words[], int len, char* result[], char head, char tail, bool enable_loop, int tag)
 {
     using std::vector;
 
-    int maxLengthNow = 0;
     Node *prevNodeNow = nullptr;
-    Node* nodeNow = nullptr;
-    int lengthNow = 0;
-    int alphaOrder[charNum];
-
-    int beginIndex = (head == '\0') ? -1 : ((head <= 'Z' && head >= 'A') ? head - 'A' : head - 'a');
-    int endIndex = (tail == '\0') ? -1 : ((tail <= 'Z' && tail >= 'A') ? tail - 'A' : tail - 'a');
-    int loopBegin = 0;
-
-    initPartOrder();
-
     vector<Node*> firstDic[charNum];
     vector<Node*> lastDic[charNum];
     vector<Node*> sortedWords;
     vector<Node*> retVec;
+    int alphaOrder[charNum];
+    int beginIndex = (head == '\0') ? -1 : ((head <= 'Z' && head >= 'A') ? head - 'A' : head - 'a');
+    int endIndex = (tail == '\0') ? -1 : ((tail <= 'Z' && tail >= 'A') ? tail - 'A' : tail - 'a');
+    int loopBegin = 0;
 
-    fillInTable(words, len, firstDic, lastDic, enable_loop);
+    initPartOrder(); // 初始化alphaOrder数组
+    fillInTable(words, len, firstDic, lastDic, enable_loop);  // 根据传入的字符指针数组构建相应的对象，并将其填入firstDic、lastDic数组中
 
     if (!enable_loop)
     {
+        // 不构成环的情况，需要考虑可能出现环
         alphaSort(alphaOrder);
         fillInOrder(beginIndex, alphaOrder, firstDic, loopBegin, sortedWords);
-        /*
-        动态规划
-        */
-        for (int i = loopBegin; i < len; ++i)
-        {
-            nodeNow = sortedWords[i];
-            for (int j = loopBegin; j < i; ++j)
-            {
-                if (sortedWords[j]->getLastChar() == nodeNow->getFirstChar() && sortedWords[j]->getMaxLength() > 0)
-                {
-                    if (tag == 1)
-                    {
-                        lengthNow = sortedWords[j]->getMaxLength() + nodeNow->getLength();
-                    }
-                    else
-                    {
-                        lengthNow = sortedWords[j]->getMaxLength() + 1;
-                    }
-                    if (lengthNow > nodeNow->getMaxLength())
-                    {
-                        nodeNow->setMaxLength(lengthNow);
-                        nodeNow->setPreNode(sortedWords[j]);
-                    }
-                }
-            }
-            if (head != '\0')
-            {
-                if (tag == 1)
-                {
-                    if (beginIndex == nodeNow->getFirstChar() - 'a' && nodeNow->getMaxLength() < nodeNow->getLength())
-                    {
-                        nodeNow->setMaxLength(nodeNow->getLength());
-                    }
-                }
-                else
-                {
-                    if (beginIndex == nodeNow->getFirstChar() - 'a' && nodeNow->getMaxLength() < 1)
-                    {
-                        nodeNow->setMaxLength(1);
-                    }
-                }
-                
-            }
-            else
-            {
-                if (tag == 1)
-                {
-                    if (nodeNow->getMaxLength() < nodeNow->getLength())
-                    {
-                        nodeNow->setMaxLength(nodeNow->getLength());
-                    }
-
-                }
-                else
-                {
-                    if (nodeNow->getMaxLength() < 1)
-                    {
-                        nodeNow->setMaxLength(1);
-                    }
-                }
-                
-            }
-
-            if (tail != '\0')
-            {
-                if (endIndex == nodeNow->getLastChar() - 'a' && nodeNow->getMaxLength() > maxLengthNow)
-                {
-                    maxLengthNow = nodeNow->getMaxLength();
-                    prevNodeNow = nodeNow;
-                }
-            }
-            else
-            {
-                if (nodeNow->getMaxLength() > maxLengthNow)
-                {
-                    maxLengthNow = nodeNow->getMaxLength();
-                    prevNodeNow = nodeNow;
-                }
-            }
-        }
+        dynamicAlgorithm(loopBegin, len, sortedWords, tag, beginIndex, endIndex, prevNodeNow);
         /*
         逆序将最长单词链填入vector中
         */
@@ -276,7 +279,6 @@ int gen_chain(char* words[], int len, char* result[], char head, char tail, bool
     else
     {
         // $TODO
-
     }
     return 0;
 }
