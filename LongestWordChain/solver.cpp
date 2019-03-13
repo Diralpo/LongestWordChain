@@ -39,7 +39,19 @@ Solver::Solver(char* words[], int len, char* result[], char head, char tail, boo
 
 Solver::~Solver()
 {
-
+    int size = 0;
+    for (int i = 0; i < charNum; ++i)
+    {
+        size = m_firstDic[i].size();
+        for (int j = 0; j < size; ++j)
+        {
+            delete m_firstDic[i][j];
+        }
+    }
+    delete []m_firstDic;
+    delete []m_lastDic;
+    delete m_currentOpt;
+    delete m_currentTemp;
 }
 
 /*
@@ -47,7 +59,7 @@ Solver::~Solver()
     part['a']['e'] = 1
 */
 
-bool Solver::isRepeat(const char const *newstr)
+bool Solver::isRepeat(const char * const newstr)
 {
     int index = (newstr[0] >= 'A' && newstr[0] <= 'Z') ? newstr[0] - 'A' : newstr[0] - 'a';
     for (int i = 0; i < m_firstDic[index].size(); ++i)
@@ -282,8 +294,8 @@ int Solver::gen_chain()
 
     vector<Node*> retVec;
 
-    int beginIndex = (m_head == '\0') ? -1 : ((m_head <= 'Z' && m_head >= 'A') ? m_head - 'A' : m_head - 'a');
-    int endIndex = (m_tail == '\0') ? -1 : ((m_tail <= 'Z' && m_tail >= 'A') ? m_tail - 'A' : m_tail - 'a');
+    int beginIndex = (m_head == '\0') ? -1 : m_head - 'a';
+    int endIndex = (m_tail == '\0') ? -1 : m_tail - 'a';
     int loopBegin = 0;
 
     fillInTable();  // 根据传入的字符指针数组构建相应的对象，并将其填入firstDic、lastDic数组中
@@ -308,7 +320,10 @@ int Solver::gen_chain()
         */
         for (int i = 0; i < retVec.size(); ++i)
         {
-            m_result[i] = retVec[i]->getWord();
+            int length = retVec[i]->getLength();
+            m_result[i] = new char[length + 1];
+            strcpy_s(m_result[i], length + 1, retVec[i]->getWord());
+            //m_result[i] = retVec[i]->getWord();
         }
         return retVec.size();
     }

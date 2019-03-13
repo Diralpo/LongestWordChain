@@ -7,6 +7,7 @@
 #include "node.h"
 #include "def.h"
 #include "core.h"
+#include "exceptions_.h"
 
 char *wordlist[20000];
 int wordIndex = 0;
@@ -22,16 +23,25 @@ int main(int argc, char *argv[])
     char endCh = '\0';
     bool isRing = false;
     std::string filename = std::string();
-
-    getopt(argc, argv, tag, headCh, endCh, isRing, filename);
-
-    getFileInput(filename);
-    /*
-    for (int i = 0; i < wordIndex; ++i)
+    try 
     {
-        cout << wordlist[i] << endl;
+        getopt(argc, argv, tag, headCh, endCh, isRing, filename);
     }
-    */
+    catch (IllegalParametersException &illExcept)
+    {
+        cout << illExcept.what() << endl;
+        return -1;
+    }
+    
+    try
+    {
+        getFileInput(filename);
+    }
+    catch (FileNotExitException &fileExc)
+    {
+        cout << fileExc.what() << endl;
+    }
+
     char **result = new char*[wordIndex];
     int maxLength = 0;
 
@@ -55,8 +65,10 @@ int main(int argc, char *argv[])
     for (int i = 0; i < maxLength; ++i)
     {
         out << result[i] << endl;
+        // delete result[i];
     }
     out.close();
+    delete []result;
 
     return 0;
 }

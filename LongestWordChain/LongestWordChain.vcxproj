@@ -158,12 +158,14 @@
     <ClInclude Include="commenFuncs.h" />
     <ClInclude Include="core.h" />
     <ClInclude Include="def.h" />
+    <ClInclude Include="exceptions_.h" />
     <ClInclude Include="node.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="solver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp" />
+    <ClCompile Include="exceptions_.cpp" />
     <ClCompile Include="inputProcess.cpp" />
     <ClCompile Include="LongestWordChain.cpp" />
     <ClCompile Include="node.cpp" />

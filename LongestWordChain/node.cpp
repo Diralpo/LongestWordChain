@@ -19,6 +19,7 @@ Node::Node(char *word)
 
 Node::~Node()
 {
+    //std::cout << "delete\n";
     delete m_word;
 }
 

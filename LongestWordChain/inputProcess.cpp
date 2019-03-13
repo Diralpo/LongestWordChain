@@ -8,6 +8,7 @@
 #include "commenFuncs.h"
 #include "def.h"
 #include "node.h"
+#include "exceptions_.h"
 
 /**
     tag :   0-- max number 
@@ -25,7 +26,7 @@ void getopt(int argc, char *argv[], int &tag, char &headCh, char &endCh, bool &i
             if (tag != -1)
             {
                 // $TODO
-                exit(-1);
+                throw IllegalParametersException();
             }
             tag = 0;
             i++;
@@ -35,7 +36,7 @@ void getopt(int argc, char *argv[], int &tag, char &headCh, char &endCh, bool &i
             if (tag != -1)
             {
                 // $TODO
-                exit(-1);
+                throw IllegalParametersException();
             }
             tag = 1;
             i++;
@@ -45,18 +46,18 @@ void getopt(int argc, char *argv[], int &tag, char &headCh, char &endCh, bool &i
             if (strlen(argv[i + 1]) != 1)
             {
                 // $TODO
-                exit(-1);
+                throw IllegalParametersException();
             }
             if (headCh != '\0')
             {
                 // $TODO
-                exit(-1);
+                throw IllegalParametersException();
             }
             headCh = argv[i + 1][0];
             if (isalpha(headCh) == 0)
             {
                 // $TODO
-                exit(-1);
+                throw IllegalParametersException();
             }
             i += 2;
         }
@@ -65,18 +66,18 @@ void getopt(int argc, char *argv[], int &tag, char &headCh, char &endCh, bool &i
             if (strlen(argv[i + 1]) != 1)
             {
                 // $TODO
-                exit(-1);
+                throw IllegalParametersException();
             }
             if (endCh != '\0')
             {
                 // $TODO
-                exit(-1);
+                throw IllegalParametersException();
             }
             endCh = argv[i + 1][0];
             if (isalpha(endCh) == 0)
             {
                 // $TODO
-                exit(-1);
+                throw IllegalParametersException();
             }
             i += 2;
         }
@@ -85,7 +86,7 @@ void getopt(int argc, char *argv[], int &tag, char &headCh, char &endCh, bool &i
             if (isRing)
             {
                 // $TODO
-                exit(-1);
+                throw IllegalParametersException();
             }
             isRing = true;
             i++;
@@ -100,14 +101,14 @@ void getopt(int argc, char *argv[], int &tag, char &headCh, char &endCh, bool &i
             else 
             {
                 // $TODO
-                exit(-1);
+                throw IllegalParametersException();
             }
         }
     }
     if (tag != 0 && tag != 1)
     {
         // $TODO
-        exit(-1);
+        throw IllegalParametersException();
     }
 }
 
@@ -123,11 +124,13 @@ void getFileInput(const std::string &filename)
     if (!in) 
     {
         // $TODO
-        exit(-1);
+        throw FileNotExitException();
+        //exit(-1);
     }
     while (!in.eof())
     {
         temp = in.get();
+
         if (isalpha(temp)) 
         {
             readStr += temp;
@@ -137,7 +140,7 @@ void getFileInput(const std::string &filename)
             if (tempcnt > 0)
             {
                 wordlist[wordIndex] = new char[tempcnt + 1];
-                strcpy(wordlist[wordIndex], readStr.c_str());
+                strcpy_s(wordlist[wordIndex], tempcnt + 1, readStr.c_str());
                 wordIndex++;
                 tempcnt = 0;
                 readStr.clear();
