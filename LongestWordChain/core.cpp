@@ -47,7 +47,7 @@ Core::~Core()
     part['a']['e'] = 1
 */
 
-bool Core::isRepeat(char *newstr)
+bool Core::isRepeat(const char const *newstr)
 {
     int index = (newstr[0] >= 'A' && newstr[0] <= 'Z') ? newstr[0] - 'A' : newstr[0] - 'a';
     for (int i = 0; i < m_firstDic[index].size(); ++i)

@@ -118,7 +118,7 @@ void getFileInput(const std::string &filename)
 
     char temp;
     int tempcnt = 0;
-    char tempstr[1000] = {};
+    std::string readStr;
 
     if (!in) 
     {
@@ -130,19 +130,17 @@ void getFileInput(const std::string &filename)
         temp = in.get();
         if (isalpha(temp)) 
         {
-            //tempstr[tempcnt] = temp;
-            tempstr[tempcnt] = (temp >= 'A' && temp <= 'Z') ? (temp - 'A' + 'a') : temp;
+            readStr += temp;
             tempcnt++;
         }
         else {
             if (tempcnt > 0)
             {
-                tempstr[tempcnt] = '\0';
-                //wordlist[wordIndex] = std::string(tempstr);
                 wordlist[wordIndex] = new char[tempcnt + 1];
-                strcpy(wordlist[wordIndex], tempstr);
+                strcpy(wordlist[wordIndex], readStr.c_str());
                 wordIndex++;
                 tempcnt = 0;
+                readStr.clear();
             }
         }
     }

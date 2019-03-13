@@ -38,7 +38,7 @@ private:
     void dynamicAlgorithm(int loopBegin, int beginIndex, int endIndex, Node* &prevNodeNow);
     int gen_chain();
 	void recursion(Node *);
-    bool isRepeat(char *);
+    bool isRepeat(const char const *);
 
 public:
     Core(char* words[], int len, char* result[], char head, char tail, bool enable_loop, int tag);
