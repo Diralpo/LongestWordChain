@@ -47,6 +47,19 @@ Core::~Core()
     part['a']['e'] = 1
 */
 
+bool Core::isRepeat(char *newstr)
+{
+    int index = (newstr[0] >= 'A' && newstr[0] <= 'Z') ? newstr[0] - 'A' : newstr[0] - 'a';
+    for (int i = 0; i < m_firstDic[index].size(); ++i)
+    {
+        if (_strcmpi(m_firstDic[index][i]->getWord(), newstr) == 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 /*
     将传入的字符指针数组转换为定义的对象，并填入相应的数组中
 */
@@ -57,6 +70,10 @@ void Core::fillInTable()
     int lastIndex = -1;
     for (int i = 0; i < m_len; ++i)
     {
+        if (isRepeat(m_words[i]))
+        {
+            continue;
+        }
         temp = new Node(m_words[i]);
         firstIndex = temp->getFirstChar() - 'a';
         lastIndex = temp->getLastChar() - 'a';
@@ -414,18 +431,22 @@ void Core::recursion(Node *rootWord)
 
 int Core::gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多单词数量的
 {
+    /* 
     using std::cout;
     using std::endl;
     cout << "最多单词数量" << endl;
+    */
     Core newCore = Core(words, len, result, head, tail, enable_loop, 0);
     return newCore.gen_chain();
 }
 
 int Core::gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多字母数量的
 {
+    /* 
     using std::cout;
     using std::endl;
     cout << "最多字母数量" << endl;
+    */
     Core newCore = Core(words, len, result, head, tail, enable_loop, 1);
     return newCore.gen_chain();
 }
