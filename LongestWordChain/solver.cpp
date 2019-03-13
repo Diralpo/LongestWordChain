@@ -318,14 +318,19 @@ int Solver::gen_chain()
         /*
         将vector中的数据取出填入result中
         */
-        for (int i = 0; i < retVec.size(); ++i)
+        int retSize = retVec.size();
+        if (retSize < 2)
+        {
+            return 0;
+        }
+        for (int i = 0; i < retSize; ++i)
         {
             int length = retVec[i]->getLength();
             m_result[i] = new char[length + 1];
             strcpy_s(m_result[i], length + 1, retVec[i]->getWord());
             //m_result[i] = retVec[i]->getWord();
         }
-        return retVec.size();
+        return retSize;
     }
     else
     {
@@ -362,11 +367,18 @@ int Solver::gen_chain()
         /*
         将vector中的数据取出填入result中
         */
-        for (int i = 0; i < m_currentOpt->size(); ++i)
+        int retSize = m_currentOpt->size();
+        if (retSize < 2)
         {
-            m_result[i] = (*m_currentOpt)[i]->getWord();
+            return 0;
         }
-        return m_currentOpt->size();
+        for (int i = 0; i < retSize; ++i)
+        {
+            int length = (*m_currentOpt)[i]->getLength();
+            m_result[i] = new char[length + 1];
+            strcpy_s(m_result[i], length + 1, (*m_currentOpt)[i]->getWord());
+        }
+        return retSize;
     }
     return 0;
 }
