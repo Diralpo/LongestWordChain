@@ -331,3 +331,4 @@ ASALocalRun/
 /.gitattributes
 /LongestWordChain/input.txt
 /LongestWordChain/solution.txt
+/LongestWordChain/input_ring.txt

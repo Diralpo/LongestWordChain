@@ -14,10 +14,13 @@ Core::Core(char* words[], int len, char* result[], char head, char tail, bool en
     m_words = words;
     m_len = len;
     m_result = result;
-    m_head = head;
-    m_tail = tail;
+    m_head = (head >= 'A' && head <= 'Z') ? head - 'A' + 'a' : head;
+	m_tail = (tail >= 'A' && tail <= 'Z') ? tail - 'A' + 'a' : tail;
     m_enable_loop = enable_loop;
     m_tag = tag;
+
+	m_currentOptLen = 0;
+	m_currentTempLen = 0;
 
     for (int i = 0; i < charNum; ++i)
     {
@@ -294,9 +297,120 @@ int Core::gen_chain()
     else
     {
         // $TODO
+		m_currentOpt = new std::vector<Node*>;
+		m_currentTemp = new std::vector<Node*>;
+		int maxLengthNow = 0;
+		//指定开头字母
+		if (m_head != '\0')
+		{
+			for (int i = 0; i < m_firstDic[beginIndex].size(); ++i)
+			{
+				m_currentTempLen = 0;
+				m_currentTemp->clear();
+				recursion(m_firstDic[beginIndex][i]);
+				m_firstDic[beginIndex][i]->changeIsUsed();
+			}
+		}
+		//没指定
+		else 
+		{
+			for (int i = 0; i < charNum; ++i) 
+			{
+				for (int j = 0; j < m_firstDic[i].size(); ++j)
+				{
+					m_currentTempLen = 0;
+					m_currentTemp->clear();
+					recursion(m_firstDic[i][j]);
+					m_firstDic[i][j]->changeIsUsed();
+					//std::cout << "--\n";
+				}
+			}
+		}
+		/*
+		将vector中的数据取出填入result中
+		*/
+		for (int i = 0; i < m_currentOpt->size(); ++i)
+		{
+			m_result[i] = (*m_currentOpt)[i]->getWord();
+		}
+		return m_currentOpt->size();
     }
     return 0;
 }
+
+void Core::recursion(Node *rootWord) 
+{
+	int flag = 0;
+
+	rootWord->changeIsUsed();
+	m_currentTemp->push_back(rootWord);
+
+	if (m_tag == 1) 
+	{
+		m_currentTempLen += rootWord->getLength();
+	}
+	else
+	{
+		m_currentTempLen++;
+	}
+	
+
+	int tempIndex = rootWord->getLastChar() - 'a';
+	Node* nextNode = nullptr;
+
+	for (int i = 0; i < m_firstDic[tempIndex].size(); ++i)
+	{
+		nextNode = m_firstDic[tempIndex][i];
+		if (!nextNode->getIsUsed() && (m_currentOptLen < m_currentTempLen + nextNode->getMaxLength() || nextNode->getMaxLength() == 0) )
+		{
+			flag = 1;
+			recursion(nextNode);
+			nextNode->changeIsUsed();
+		}
+	}
+	if (m_tail != '\0') 
+	{
+		if (rootWord->getLastChar() == m_tail) 
+		{
+			if (m_currentTempLen > (*m_currentTemp)[0]->getMaxLength())
+			{
+				(*m_currentTemp)[0]->setMaxLength(m_currentTempLen);
+			}
+			if (m_currentTempLen > m_currentOptLen) 
+			{
+				m_currentOptLen = m_currentTempLen;
+				delete m_currentOpt;
+				m_currentOpt = new std::vector<Node*>;
+				*m_currentOpt = *m_currentTemp;
+			}
+		}
+	}
+	else
+	{
+		if (flag == 0 && m_currentTempLen > (*m_currentTemp)[0]->getMaxLength())
+		{
+			(*m_currentTemp)[0]->setMaxLength(m_currentTempLen);
+		}
+		if(flag == 0 && m_currentTempLen > m_currentOptLen)
+		{
+			m_currentOptLen = m_currentTempLen;
+			delete m_currentOpt;
+			m_currentOpt = new std::vector<Node*>;
+			*m_currentOpt = *m_currentTemp;
+		}
+	}
+	m_currentTemp->pop_back();
+	if (m_tag == 1)
+	{
+		m_currentTempLen -= rootWord->getLength();
+	}
+	else
+	{
+		m_currentTempLen--;
+	}
+}
+
+
 
 int Core::gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多单词数量的
 {
@@ -315,3 +429,4 @@ int Core::gen_chain_char(char* words[], int len, char* result[], char head, char
     Core newCore = Core(words, len, result, head, tail, enable_loop, 1);
     return newCore.gen_chain();
 }
+

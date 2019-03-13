@@ -21,15 +21,24 @@ private:
     int m_partOrderRelation[charNum][charNum];
     int m_alphaOrder[charNum];
     int m_alphaInDegree[charNum];
-    std::vector<Node*> *m_firstDic; 
+    
+	int m_currentOptLen;
+	int m_currentTempLen;
+
+	std::vector<Node*> *m_firstDic; 
     std::vector<Node*> *m_lastDic;
     std::vector<Node*> m_sortedWords;
+	std::vector<Node*> *m_currentOpt;
+	std::vector<Node*> *m_currentTemp;
+
 
     void fillInTable();
     void alphaSort();
     void fillInOrder(int beginIndex, int loopBegin);
     void dynamicAlgorithm(int loopBegin, int beginIndex, int endIndex, Node* &prevNodeNow);
     int gen_chain();
+	void recursion(Node *);
+
 public:
     Core(char* words[], int len, char* result[], char head, char tail, bool enable_loop, int tag);
     ~Core();
