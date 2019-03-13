@@ -34,7 +34,7 @@ private:
 
     void fillInTable();
     void alphaSort();
-    void fillInOrder(int beginIndex, int loopBegin);
+    void fillInOrder(int beginIndex, int &loopBegin);
     void dynamicAlgorithm(int loopBegin, int beginIndex, int endIndex, Node* &prevNodeNow);
     int gen_chain();
 	void recursion(Node *);
