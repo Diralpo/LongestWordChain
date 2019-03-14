@@ -99,7 +99,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>..\LongestWordChain\x64\Debug\core.obj;..\LongestWordChain\x64\Debug\exceptions_.obj;..\LongestWordChain\x64\Debug\inputProcess.obj;..\LongestWordChain\x64\Debug\LongestWordChain.obj;..\LongestWordChain\x64\Debug\node.obj;..\LongestWordChain\x64\Debug\pch.obj;..\LongestWordChain\x64\Debug\solver.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\LongestWordChain\x64\Debug\core.obj;..\LongestWordChain\x64\Debug\exceptions_.obj;..\LongestWordChain\x64\Debug\inputProcess.obj;..\LongestWordChain\x64\Debug\node.obj;..\LongestWordChain\x64\Debug\pch.obj;..\LongestWordChain\x64\Debug\solver.obj;..\Core\x64\Debug\Core.obj;..\Core\x64\Debug\dllmain.obj;..\Core\x64\Debug\node.obj;..\Core\x64\Debug\solver.obj;..\Core\x64\Debug\stdafx.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -114,6 +114,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>..\LongestWordChain\Debug\exceptions_.obj;..\LongestWordChain\Debug\inputProcess.obj;..\LongestWordChain\Debug\LongestWordChain.obj;..\Core\Debug\Core.obj;..\Core\Debug\dllmain.obj;..\Core\Debug\node.obj;..\Core\Debug\solver.obj;..\Core\Debug\stdafx.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -164,6 +165,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="unittest1.cpp" />
+    <ClCompile Include="unittest2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LongestWordChain\LongestWordChain.vcxproj">
