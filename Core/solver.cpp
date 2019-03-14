@@ -1,13 +1,11 @@
 #include "stdafx.h"
 #include <string>
-#include <iostream>
-#include <fstream>
-#include <cctype>
 #include <vector>
 
 #include "def.h"
 #include "node.h"
 #include "Solver.h"
+#include "exceptions_.h"
 
 Solver::Solver(char* words[], int len, char* result[], char head, char tail, bool enable_loop, int tag)
 {
@@ -104,7 +102,8 @@ void Solver::fillInTable()
             if (!m_enable_loop && m_partOrderRelation[firstIndex][lastIndex] > 0)
             {
                 // $TODO
-                exit(-1);
+                throw FormEnglishWordRingsException();
+                //exit(-1);
             }
             else
             {
@@ -116,7 +115,8 @@ void Solver::fillInTable()
             if (!m_enable_loop && m_partOrderRelation[firstIndex][lastIndex] < 0)
             {
                 // $TODO
-                exit(-1);
+                throw FormEnglishWordRingsException();
+                //exit(-1);
 
             }
             else
@@ -164,7 +164,8 @@ void Solver::alphaSort()
         if (flag == 0)
         {
             // $TODO
-            exit(-1);
+            throw FormEnglishWordRingsException();
+            //exit(-1);
         }
     }
 
@@ -186,7 +187,7 @@ void Solver::fillInOrder(int beginIndex, int &loopBegin)
             else
             {
                 // $TODO
-                abort();
+                //abort();
             }
         }
         for (int j = 0; j < m_firstDic[m_alphaOrder[i]].size(); ++j)
