@@ -53,7 +53,16 @@ int main(int argc, char *argv[])
 
     if (tag == 0)
     {
-        maxLength = gen_chain_word(wordlist, wordIndex, result, headCh, endCh, isRing);
+        try 
+        {
+            maxLength = gen_chain_word(wordlist, wordIndex, result, headCh, endCh, isRing);
+        }
+        catch (std::exception &excpt)
+        {
+            cout << excpt.what() << endl;
+            exit(-1);
+        }
+        
         for (int i = 0; i < maxLength; ++i)
         {
             cout << result[i] << endl;
@@ -61,7 +70,15 @@ int main(int argc, char *argv[])
     }
     else
     {
-        maxLength = gen_chain_char(wordlist, wordIndex, result, headCh, endCh, isRing);
+        try
+        {
+            maxLength = gen_chain_char(wordlist, wordIndex, result, headCh, endCh, isRing);
+        }
+        catch (std::exception &excpt)
+        {
+            cout << excpt.what() << endl;
+            exit(-1);
+        }
         for (int i = 0; i < maxLength; ++i)
         {
             cout << result[i] << endl;

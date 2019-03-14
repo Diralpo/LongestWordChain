@@ -1,12 +1,6 @@
 #include "stdafx.h"
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <cctype>
 #include <vector>
 
-#include "def.h"
-#include "node.h"
 #include "core.h"
 #include "solver.h"
 
