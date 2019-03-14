@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-
+#include <exception>
 
 #include "../Core/core.h"
 
@@ -367,5 +367,68 @@ namespace UnitTest2
 			Assert::IsFalse(std::strcmp(result[3], "vvitmqskdyeap"));
 			Assert::IsFalse(std::strcmp(result[4], "pwwbogbwp"));
 		}
+
+        TEST_METHOD(TestMethod10)
+        {
+            // TODO: 在此输入测试代码
+            //int gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop);  // 计算最多单词数量的
+            //int gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop);  // 计算最多字母数量的
+
+            int wordIndex = 0;
+            char **result;
+            char headCh = '\0';
+            char endCh = '\0';
+            bool isRing = false;
+            char *wordlist[100];
+
+            wordlist[0] = new char[20]{ "annzcclv" };
+            wordlist[1] = new char[20]{ "klebwukqbui" };
+            wordlist[2] = new char[20]{ "qhqkibinpyew" };
+            wordlist[3] = new char[20]{ "fkapwouje" };
+            wordlist[4] = new char[20]{ "mitecsqa" };
+            wordlist[5] = new char[20]{ "mogowquzdsmto" };
+            wordlist[6] = new char[20]{ "oxkyhmgemdfpq" };
+            wordlist[7] = new char[20]{ "hzvreibfb" };
+            wordlist[8] = new char[20]{ "phgxdlmyrw" };
+            wordlist[9] = new char[20]{ "wuckfwlghglup" };
+
+            wordIndex = 13;
+            result = new char*[wordIndex];
+            int ans = 0;
+            try
+            {
+                ans = gen_chain_word(wordlist, wordIndex, result, headCh, endCh, isRing);
+            }
+            catch (std::exception &excpt)
+            {
+                Assert::IsFalse(std::strcmp(excpt.what(), " word rings "));
+            }
+            try
+            {
+                ans = gen_chain_word(wordlist, -1, result, headCh, endCh, isRing);
+            }
+            catch (std::exception &excpt)
+            {
+                Assert::IsFalse(std::strcmp(excpt.what(), " illegal interface parameters "));
+            }
+            try
+            {
+                ans = gen_chain_word(wordlist, wordIndex, result, '&', endCh, isRing);
+            }
+            catch (std::exception &excpt)
+            {
+                Assert::IsFalse(std::strcmp(excpt.what(), " illegal interface parameters "));
+            }
+            try
+            {
+                ans = gen_chain_word(wordlist, wordIndex, result, 'a', '8', isRing);
+            }
+            catch (std::exception &excpt)
+            {
+                Assert::IsFalse(std::strcmp(excpt.what(), " illegal interface parameters "));
+            }
+            
+
+        }
 	};
 }
