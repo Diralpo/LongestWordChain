@@ -15,41 +15,40 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="core.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="def.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="commenFuncs.h">
+    <ClInclude Include="node.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="exceptions_.h">
+    <ClInclude Include="solver.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="LongestWordChain.cpp">
+    <ClCompile Include="Core.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="inputProcess.cpp">
+    <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="exceptions_.cpp">
+    <ClCompile Include="node.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\BIN\Core.dll">
-      <Filter>资源文件</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\BIN\Core.lib">
-      <Filter>资源文件</Filter>
-    </Library>
+    <ClCompile Include="solver.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

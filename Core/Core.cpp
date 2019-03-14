@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "stdafx.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -11,7 +11,7 @@
 #include "solver.h"
 
 
-int Core::gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多单词数量的
+int gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多单词数量的
 {
     /* 
     using std::cout;
@@ -22,7 +22,7 @@ int Core::gen_chain_word(char* words[], int len, char* result[], char head, char
     return newCore.gen_chain();
 }
 
-int Core::gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多字母数量的
+int gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop) // 计算最多字母数量的
 {
     /*
     assert(head == 0 || (head <= 'Z' && head >= 'A') || (head <= 'z' && head >= 'a'));
