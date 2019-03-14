@@ -14,6 +14,7 @@ char *wordlist[20000];
 int wordIndex = 0;
 const char * const outputFile = "solution.txt";
 
+
 int main(int argc, char *argv[])
 {
     using std::cout;
