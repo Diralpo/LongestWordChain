@@ -102,7 +102,7 @@ void Solver::fillInTable()
             if (!m_enable_loop && m_partOrderRelation[firstIndex][lastIndex] > 0)
             {
                 // $TODO
-                throw FormEnglishWordRingsException();
+                throw WordRingsException();
                 //exit(-1);
             }
             else
@@ -115,7 +115,7 @@ void Solver::fillInTable()
             if (!m_enable_loop && m_partOrderRelation[firstIndex][lastIndex] < 0)
             {
                 // $TODO
-                throw FormEnglishWordRingsException();
+                throw WordRingsException();
                 //exit(-1);
 
             }
@@ -164,7 +164,7 @@ void Solver::alphaSort()
         if (flag == 0)
         {
             // $TODO
-            throw FormEnglishWordRingsException();
+            throw WordRingsException();
             //exit(-1);
         }
     }
