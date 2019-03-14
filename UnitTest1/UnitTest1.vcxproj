@@ -133,6 +133,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>../Core/Release/Core.obj;../Core/Release/node.obj;../Core/Release/solver.obj;../Core/Release/stdafx.obj;../LongestWordChain/Release/exceptions_.obj;../LongestWordChain/Release/inputProcess.obj;../LongestWordChain/Release/LongestWordChain.obj;../LongestWordChain/Release/pch.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,6 +152,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>../Core/Release/Core.obj;../Core/Release/node.obj;../Core/Release/solver.obj;../Core/Release/stdafx.obj;../LongestWordChain/Release/exceptions_.obj;../LongestWordChain/Release/inputProcess.obj;../LongestWordChain/Release/LongestWordChain.obj;../LongestWordChain/Release/pch.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -171,6 +173,9 @@
     <ProjectReference Include="..\LongestWordChain\LongestWordChain.vcxproj">
       <Project>{18e077d1-1795-4196-893f-7ff109f7a25c}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\LongestWordChain\Core.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

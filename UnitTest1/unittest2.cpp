@@ -1,10 +1,8 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "..\Core\def.h"
-#include "..\Core\node.h"
-#include "..\Core\core.h"
-#include "..\Core\solver.h"
+
+#include "../Core/core.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -33,26 +31,26 @@ namespace UnitTest2
 			char endCh = '\0';
 			bool isRing = false;
 
-			wordlist[0] = "annzcclv";
-			wordlist[1] = "klebwukqbui";
-			wordlist[2] = "qhqkibinpyew";
-			wordlist[3] = "fkapwouje";
-			wordlist[4] = "mitecsqa";
-			wordlist[5] = "mogowquzdsmto";
-			wordlist[6] = "oxkyhmgemdfpq";
-			wordlist[7] = "hzvreibfb";
-			wordlist[8] = "phgxdlmyrw";
-			wordlist[9] = "kuckfwlghglua";
-			wordlist[10] = "ucqavnwkqseyy";
-			wordlist[11] = "quhxkzqxf";
-			wordlist[12] = "iwoegjfbxhu";
+            wordlist[0] = new char[20] {"annzcclv"};
+			wordlist[1] = new char[20] {"klebwukqbui"};
+			wordlist[2] = new char[20] {"qhqkibinpyew"};
+			wordlist[3] = new char[20] {"fkapwouje"};
+			wordlist[4] = new char[20] {"mitecsqa"};
+			wordlist[5] = new char[20] {"mogowquzdsmto"};
+			wordlist[6] = new char[20] {"oxkyhmgemdfpq"};
+			wordlist[7] = new char[20] {"hzvreibfb"};
+			wordlist[8] = new char[20] {"phgxdlmyrw"};
+			wordlist[9] = new char[20] {"kuckfwlghglua"};
+			wordlist[10] = new char[20] {"ucqavnwkqseyy"};
+			wordlist[11] = new char[20] {"quhxkzqxf"};
+			wordlist[12] = new char[20] {"iwoegjfbxhu"};
 			
 			wordIndex = 13;
 			result = new char*[wordIndex];
 
 			int ans = gen_chain_word(wordlist, wordIndex, result, headCh, endCh, isRing);
 			
-			Assert::AreEqual(3, ans);
+			Assert::AreEqual(4, ans);
 			//Assert::AreEqual(headCh, '\0');
 			//Assert::AreEqual(endCh, '\0');
 			//Assert::IsFalse(isRing);

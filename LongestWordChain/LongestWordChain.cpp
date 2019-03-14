@@ -7,11 +7,7 @@
 #include "commenFuncs.h"
 #include "def.h"
 #include "exceptions_.h"
-
-#pragma comment(lib, "Core.lib")
-
-extern __declspec(dllimport) int gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop);  // 计算最多单词数量的
-extern __declspec(dllimport) int gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop);
+#include "../Core/core.h"
 
 
 char *wordlist[20000];
