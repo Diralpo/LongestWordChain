@@ -43,13 +43,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="Core.lib">
-      <Filter>资源文件</Filter>
-    </Library>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Core.dll">
+    <None Include="..\BIN\Core.dll">
       <Filter>资源文件</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\BIN\Core.lib">
+      <Filter>资源文件</Filter>
+    </Library>
   </ItemGroup>
 </Project>

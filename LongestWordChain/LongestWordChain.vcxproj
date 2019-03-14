@@ -172,10 +172,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="Core.lib" />
+    <None Include="..\BIN\Core.dll" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Core.dll" />
+    <Library Include="..\BIN\Core.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
