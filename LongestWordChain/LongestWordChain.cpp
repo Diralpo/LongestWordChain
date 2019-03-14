@@ -2,12 +2,17 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <Windows.h>
 
 #include "commenFuncs.h"
-#include "node.h"
 #include "def.h"
-#include "core.h"
 #include "exceptions_.h"
+
+#pragma comment(lib, "Core.lib")
+
+extern __declspec(dllimport) int gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop);  // 计算最多单词数量的
+extern __declspec(dllimport) int gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop);
+
 
 char *wordlist[20000];
 int wordIndex = 0;
@@ -45,9 +50,10 @@ int main(int argc, char *argv[])
     char **result = new char*[wordIndex];
     int maxLength = 0;
 
+
     if (tag == 0)
     {
-        maxLength = Core::gen_chain_word(wordlist, wordIndex, result, headCh, endCh, isRing);
+        maxLength = gen_chain_word(wordlist, wordIndex, result, headCh, endCh, isRing);
         for (int i = 0; i < maxLength; ++i)
         {
             cout << result[i] << endl;
@@ -55,7 +61,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        maxLength = Core::gen_chain_char(wordlist, wordIndex, result, headCh, endCh, isRing);
+        maxLength = gen_chain_char(wordlist, wordIndex, result, headCh, endCh, isRing);
         for (int i = 0; i < maxLength; ++i)
         {
             cout << result[i] << endl;
