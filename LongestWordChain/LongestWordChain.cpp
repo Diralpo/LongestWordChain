@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < maxLength; ++i)
     {
         out << result[i] << endl;
-        // delete result[i];
+        delete result[i];
     }
     out.close();
     delete []result;

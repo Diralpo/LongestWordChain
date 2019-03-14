@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef NODE_H_
-#define NODE_H_
-
 #include <iostream>
 
 class Node
@@ -31,5 +28,3 @@ public:
     void setPreNode(Node *preNode);
 
 };
-
-#endif //NODE_H_
