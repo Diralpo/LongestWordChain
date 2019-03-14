@@ -122,9 +122,7 @@ void getFileInput(const std::string &filename)
 
     if (!in) 
     {
-        // $TODO
         throw FileNotExitException();
-        //exit(-1);
     }
     while (!in.eof())
     {

@@ -174,9 +174,6 @@
       <Project>{18e077d1-1795-4196-893f-7ff109f7a25c}</Project>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\LongestWordChain\Core.lib" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

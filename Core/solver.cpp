@@ -60,7 +60,7 @@ Solver::~Solver()
 bool Solver::isRepeat(const char * const newstr)
 {
     int index = (newstr[0] >= 'A' && newstr[0] <= 'Z') ? newstr[0] - 'A' : newstr[0] - 'a';
-    for (int i = 0; i < m_firstDic[index].size(); ++i)
+    for (unsigned int i = 0; i < m_firstDic[index].size(); ++i)
     {
         if (_strcmpi(m_firstDic[index][i]->getWord(), newstr) == 0)
         {
@@ -190,7 +190,7 @@ void Solver::fillInOrder(int beginIndex, int &loopBegin)
                 //abort();
             }
         }
-        for (int j = 0; j < m_firstDic[m_alphaOrder[i]].size(); ++j)
+        for (unsigned int j = 0; j < m_firstDic[m_alphaOrder[i]].size(); ++j)
         {
             m_sortedWords.push_back(m_firstDic[m_alphaOrder[i]][j]);
         }
@@ -342,7 +342,7 @@ int Solver::gen_chain()
         //指定开头字母
         if (m_head != '\0')
         {
-            for (int i = 0; i < m_firstDic[beginIndex].size(); ++i)
+            for (unsigned int i = 0; i < m_firstDic[beginIndex].size(); ++i)
             {
                 m_currentTempLen = 0;
                 m_currentTemp->clear();
@@ -355,7 +355,7 @@ int Solver::gen_chain()
         {
             for (int i = 0; i < charNum; ++i)
             {
-                for (int j = 0; j < m_firstDic[i].size(); ++j)
+                for (unsigned int j = 0; j < m_firstDic[i].size(); ++j)
                 {
                     m_currentTempLen = 0;
                     m_currentTemp->clear();
@@ -404,7 +404,7 @@ void Solver::recursion(Node *rootWord)
     int tempIndex = rootWord->getLastChar() - 'a';
     Node* nextNode = nullptr;
 
-    for (int i = 0; i < m_firstDic[tempIndex].size(); ++i)
+    for (unsigned int i = 0; i < m_firstDic[tempIndex].size(); ++i)
     {
         nextNode = m_firstDic[tempIndex][i];
         if (!nextNode->getIsUsed() && (m_currentOptLen < m_currentTempLen + nextNode->getMaxLength() || nextNode->getMaxLength() == 0))
