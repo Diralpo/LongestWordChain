@@ -1,6 +1,4 @@
 #pragma once
-#ifndef EXCEPTIONS_H__
-#define EXCEPTIONS_H__
 
 #include <exception>
 
@@ -15,5 +13,3 @@ class FileNotExitException : public std::exception
 public:
     const char* what() { return " input text file does not exist "; };
 };
-
-#endif
